@@ -1,4 +1,4 @@
-package com.globant;
+package com.globant.communication;
 
 import java.io.Serializable;
 

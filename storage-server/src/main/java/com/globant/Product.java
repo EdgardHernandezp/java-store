@@ -2,16 +2,18 @@ package com.globant;
 
 import java.io.Serializable;
 
-class Product implements Serializable {
+public class Product implements Serializable {
     private static final long serialVersionUID = 1l;
     private int code;
     private String name;
-    private float price;
+    private double price;
+    private ProductType productType;
 
-    public Product(int code, String name, float price) {
+    public Product(int code, String name, double price, ProductType productType) {
         this.code = code;
         this.name = name;
         this.price = price;
+        this.productType = productType;
     }
 
     public int getCode() {
@@ -22,11 +24,11 @@ class Product implements Serializable {
         this.code = code;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

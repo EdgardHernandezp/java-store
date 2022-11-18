@@ -1,4 +1,6 @@
-package com.globant;
+package com.globant.shoppingcart;
+
+import com.globant.Product;
 
 class Item {
     private Product product;

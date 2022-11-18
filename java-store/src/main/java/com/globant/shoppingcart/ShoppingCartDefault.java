@@ -1,5 +1,6 @@
-package com.globant;
+package com.globant.shoppingcart;
 
+import com.globant.Product;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class ShoppingCartDefault implements ShoppingCart {
     List<Item> items = new LinkedList<>();
 
     @Override
-    public void addItem(Item item) {
-        items.add(item);
+    public void addItem(Product product, int amount) {
+        items.add(new Item(product, amount));
     }
 
     @Override
