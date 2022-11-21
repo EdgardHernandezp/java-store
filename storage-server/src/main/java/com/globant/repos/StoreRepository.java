@@ -12,5 +12,5 @@ public interface StoreRepository {
 
     ProductType deleteProductType(int productTypeId);
 
-    void modifyProductAmount(int productId, int amount);
+    void updateStock(int productId, int amount);
 }

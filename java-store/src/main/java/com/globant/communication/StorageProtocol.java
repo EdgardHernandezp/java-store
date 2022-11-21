@@ -18,7 +18,6 @@ public class StorageProtocol {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8))) {
             out.write(request);
             out.flush();
-//            response = in.lines().collect(Collectors.joining("\n"));
             Scanner scanner = new Scanner(in).useDelimiter("\n"); //TODO: understand flush and the blocking problem
             response = scanner.next();
         } catch (Exception e) {

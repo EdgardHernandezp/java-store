@@ -1,10 +1,14 @@
 package com.globant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProductType {
     private int code;
     private String name;
 
-    public ProductType(int code, String name) {
+    @JsonCreator
+    public ProductType(@JsonProperty("code") int code, @JsonProperty("name") String name) {
         this.code = code;
         this.name = name;
     }

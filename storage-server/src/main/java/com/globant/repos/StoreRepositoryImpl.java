@@ -9,7 +9,7 @@ public class StoreRepositoryImpl implements StoreRepository {
 
     private static final Map<Integer, Product> products = new HashMap<>();
     private static final Map<Integer, ProductType> productTypes = new HashMap<>();
-    private static final Map<Integer, Integer> productStorage = new HashMap<>();
+    private static final Map<Integer, Integer> stock = new HashMap<>();
     private static int productCodeIncrement = 1;
     private static int productTypeCodeIncrement = 1;
 
@@ -26,10 +26,10 @@ public class StoreRepositoryImpl implements StoreRepository {
         products.put(productCodeIncrement++, new Product(3, "Milk", 3f, diariesType));
         products.put(productCodeIncrement++, new Product(4, "Soy Milk", 2f, diariesType));
 
-        productStorage.put(1, 10);
-        productStorage.put(2, 20);
-        productStorage.put(3, 10);
-        productStorage.put(4, 15);
+        stock.put(1, 10);
+        stock.put(2, 20);
+        stock.put(3, 10);
+        stock.put(4, 15);
 
     }
 
@@ -56,9 +56,11 @@ public class StoreRepositoryImpl implements StoreRepository {
     }
 
     @Override
-    public void modifyProductAmount(int productId, int amount) {
+    public void updateStock(int productId, int quantity) {
         //TODO check for amounts of products before returning product
-        Integer currentProductAmount = productStorage.get(productId);
-        productStorage.put(productId, currentProductAmount - amount);
+        Integer currentProductQuantity = stock.get(productId);
+        stock.put(productId, currentProductQuantity - quantity);
     }
+
+    //TODO: method to check existing stock getStock(product id) return quantity
 }

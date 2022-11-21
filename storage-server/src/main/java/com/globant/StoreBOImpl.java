@@ -1,10 +1,8 @@
 package com.globant;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.repos.StoreRepository;
-import java.util.LinkedHashMap;
+import com.globant.utils.ParserUtil;
 
 public class StoreBOImpl implements StoreBO {
 
@@ -15,31 +13,17 @@ public class StoreBOImpl implements StoreBO {
     }
 
     @Override
-    public String handleRequest(String request) {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<LinkedHashMap<String, Object>> type = new TypeReference<LinkedHashMap<String, Object>>() {};
+    public String handleRequest(StoreRequest request) {
+
         //TODO: save default response json as property or separate json file
         String response = "{\"responseCode\":400,\"description\":\"Invalid action code\"}";
         try {
-            LinkedHashMap<String, Object> convertedRequest = mapper.readValue(request, type);
-            Integer actionCode = (Integer) convertedRequest.get("actionCode");
-            LinkedHashMap<String, Object> body = (LinkedHashMap<String, Object>) convertedRequest.get("body");
-            Actions action = Actions.values()[actionCode];
+            //TODO: handle case where code receive doesn't exist
+            Actions action = Actions.values()[request.getActionCode()];
             switch (action) {
                 case ADD_PRODUCT:
-                    Integer code = (Integer) body.get("code");
-                    String name = (String) body.get("name");
-                    Double price = (Double) body.get("price");
-
-                    LinkedHashMap<String, Object> productType = (LinkedHashMap<String, Object>) body.get("productType");
-                    Integer productTypeCode = (Integer) productType.get("code");
-                    String productTypeName = (String) productType.get("name");
-
-                    addProduct(new Product(code, name, price, new ProductType(productTypeCode, productTypeName)));
-                    LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
-                    responseMap.put("responseCode", 200);
-                    responseMap.put("description", "OK");
-                    response = mapper.writeValueAsString(responseMap);
+                    addProduct((Product) request.getBody());
+                    response = ParserUtil.generateResponse(200, "OK");
                     break;
                 case DELETE_PRODUCT:
                     break;
@@ -77,7 +61,7 @@ public class StoreBOImpl implements StoreBO {
     }
 
     private void retrieveProductsFromStorage(int productId, int amount) {
-        repository.modifyProductAmount(productId, amount);
+        repository.updateStock(productId, amount);
     }
 
     enum Actions {

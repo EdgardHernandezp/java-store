@@ -1,6 +1,10 @@
-package com.globant;
+package com.globant.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.globant.StoreBO;
+import com.globant.StoreBOImpl;
 import com.globant.repos.StoreRepositoryImpl;
+import com.globant.utils.ParserUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,12 +22,17 @@ public class StoreServer {
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
                 InputStreamReader in = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);) {
             Scanner scanner = new Scanner(in).useDelimiter("\n");
-            while (true) {
+            if (scanner.hasNext()) {
                 System.out.println("reading new input");
                 StoreBO storeBO = new StoreBOImpl(new StoreRepositoryImpl());
-                String response = storeBO.handleRequest(scanner.next());
-
-                out.println(response);
+                String message = scanner.next();
+                try {
+                    out.println(storeBO.handleRequest(ParserUtil.parseRequest(message)));
+                } catch (JsonProcessingException e) {
+                    //TODO: return a response json string
+                    e.printStackTrace();
+                    out.println("error");
+                }
                 out.flush();
                 System.out.println("response sent");
             }

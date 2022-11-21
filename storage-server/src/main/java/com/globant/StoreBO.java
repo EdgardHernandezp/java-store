@@ -1,5 +1,5 @@
 package com.globant;
 
 public interface StoreBO {
-    String handleRequest(String request);
+    String handleRequest(StoreRequest request);
 }
