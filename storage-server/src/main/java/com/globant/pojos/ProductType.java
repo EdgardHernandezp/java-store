@@ -1,4 +1,4 @@
-package com.globant;
+package com.globant.pojos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

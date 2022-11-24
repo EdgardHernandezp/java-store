@@ -1,19 +1,17 @@
 package com.globant.repos;
 
-import com.globant.Product;
-import com.globant.ProductType;
+import com.globant.pojos.Product;
+import com.globant.pojos.ProductType;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StoreRepositoryImpl implements StoreRepository {
-
     private static final Map<Integer, Product> products = new HashMap<>();
     private static final Map<Integer, ProductType> productTypes = new HashMap<>();
     private static final Map<Integer, Integer> stock = new HashMap<>();
+    private static StoreRepositoryImpl instance;
     private static int productCodeIncrement = 1;
     private static int productTypeCodeIncrement = 1;
-
-    //TODO: this class should be a singleton
 
     static {
         ProductType vegetablesType = new ProductType(1, "vegetables");
@@ -31,6 +29,15 @@ public class StoreRepositoryImpl implements StoreRepository {
         stock.put(3, 10);
         stock.put(4, 15);
 
+    }
+
+    private StoreRepositoryImpl() {
+    }
+
+    public static synchronized StoreRepositoryImpl getInstance() {
+        if (instance == null)
+            instance = new StoreRepositoryImpl();
+        return instance;
     }
 
     @Override
@@ -56,10 +63,12 @@ public class StoreRepositoryImpl implements StoreRepository {
     }
 
     @Override
-    public void updateStock(int productId, int quantity) {
-        //TODO check for amounts of products before returning product
+    public boolean updateStock(int productId, int quantity) {
         Integer currentProductQuantity = stock.get(productId);
+        if (currentProductQuantity < quantity)
+            return false;
         stock.put(productId, currentProductQuantity - quantity);
+        return true;
     }
 
     //TODO: method to check existing stock getStock(product id) return quantity

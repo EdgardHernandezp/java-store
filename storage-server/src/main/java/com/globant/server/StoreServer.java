@@ -24,7 +24,7 @@ public class StoreServer {
             Scanner scanner = new Scanner(in).useDelimiter("\n");
             if (scanner.hasNext()) {
                 System.out.println("reading new input");
-                StoreBO storeBO = new StoreBOImpl(new StoreRepositoryImpl());
+                StoreBO storeBO = new StoreBOImpl(StoreRepositoryImpl.getInstance());
                 String message = scanner.next();
                 try {
                     out.println(storeBO.handleRequest(ParserUtil.parseRequest(message)));

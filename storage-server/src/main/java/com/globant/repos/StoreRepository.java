@@ -1,7 +1,7 @@
 package com.globant.repos;
 
-import com.globant.Product;
-import com.globant.ProductType;
+import com.globant.pojos.Product;
+import com.globant.pojos.ProductType;
 
 public interface StoreRepository {
     boolean createProduct(Product product);
@@ -12,5 +12,5 @@ public interface StoreRepository {
 
     ProductType deleteProductType(int productTypeId);
 
-    void updateStock(int productId, int amount);
+    boolean updateStock(int productId, int amount);
 }

@@ -2,13 +2,10 @@ package com.globant.communication;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class StorageProtocol {
     static public String requestProduct(String request) {

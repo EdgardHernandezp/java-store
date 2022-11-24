@@ -1,11 +1,11 @@
-package com.globant;
+package com.globant.pojos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1l; //TODO: Check if these are still needed
     private int code;
     private String name;
     private double price;
