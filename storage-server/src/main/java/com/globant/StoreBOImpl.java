@@ -44,13 +44,14 @@ public class StoreBOImpl implements StoreBO {
                     break;
                 case RETRIEVE_PRODUCTS:
                     //TODO: response must indicate the current stock to client in case of error
-                    StockWithdrawal stockWhitdrawal = (StockWithdrawal) request.getBody();
-                    if (retrieveProductsFromStorage(stockWhitdrawal.getProductCode(), stockWhitdrawal.getRequestedQuantity()))
+                    StockWithdrawal stockWithdrawal = (StockWithdrawal) request.getBody();
+                    if (retrieveProductsFromStorage(stockWithdrawal.getProductCode(), stockWithdrawal.getRequestedQuantity()))
                         response = ParserUtil.generateResponse(200, "OK");
                     else
                         response = ParserUtil.generateResponse(400, "not enough stock to fulfill request");
                     break;
             }
+            //TODO: generate response here, pass code and message vars from cases
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -79,6 +80,7 @@ public class StoreBOImpl implements StoreBO {
     }
 
     enum Actions {
+        //TODO: keep it, no constructor
         ADD_PRODUCT("addProduct"), DELETE_RESOURCE("deleteResource"), ADD_PRODUCT_TYPE("addProductType"), RETRIEVE_PRODUCTS("retrieve");
 
         private String text;

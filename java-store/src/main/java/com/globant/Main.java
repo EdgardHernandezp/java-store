@@ -17,9 +17,9 @@ public class Main {
         request.put("action", "addProductType");
 
         //LinkedHashMap<String, Object> body = createProductbody();
-        //LinkedHashMap<String, Object> body = createProductTypeBody();
+        LinkedHashMap<String, Object> body = createProductTypeBody();
         //LinkedHashMap<String, Object> body = createDeleteInfoBody();
-        LinkedHashMap<String, Object> body = createWhitdrawalRequestBody();
+        //LinkedHashMap<String, Object> body = createWhitdrawalRequestBody();
         request.put("body", body);
         //request.put("body", 1);
 

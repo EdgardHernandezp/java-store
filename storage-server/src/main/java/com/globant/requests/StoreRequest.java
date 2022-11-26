@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = ProductTypeStoreRequest.class, name = "addProductType"),
         @JsonSubTypes.Type(value = DeleteStoreRequest.class, name = "deleteResource") })
 public class StoreRequest<T> {
-    private final String action;
+    private final String action; //TODO: change type to enum
     private final T body;
 
     @JsonCreator
