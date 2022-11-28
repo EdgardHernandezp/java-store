@@ -16,8 +16,7 @@ public class ParserUtil {
         LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
         responseMap.put("responseCode", responseCode);
         responseMap.put("description", description);
-        //TODO: save default response json as property or separate json file
-        String response = "{\"responseCode\":500,\"description\":\"server error: %s\"}";
+        String response = PropertiesHolder.getProperty("json.server.error.msg");
         try {
             response= mapper.writeValueAsString(responseMap);
         } catch (JsonProcessingException e) {

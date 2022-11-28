@@ -3,6 +3,7 @@ package com.globant.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.globant.StoreBO;
 import com.globant.utils.ParserUtil;
+import com.globant.utils.PropertiesHolder;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -11,8 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class RequestProcessingTask implements Runnable {
-    private Socket socket = null;
-    private StoreBO storeBO = null;
+    private final Socket socket;
+    private final StoreBO storeBO;
 
     public RequestProcessingTask(Socket socket, StoreBO storeBO) {
         this.socket = socket;
@@ -30,9 +31,9 @@ public class RequestProcessingTask implements Runnable {
                 try {
                     out.println(storeBO.handleRequest(ParserUtil.parseRequest(message)));
                 } catch (JsonProcessingException e) {
-                    //TODO: return a response json string
                     e.printStackTrace();
-                    out.println("error handling the request");
+                    String rawResponse = PropertiesHolder.getProperty("json.server.error.msg");
+                    out.println(String.format(rawResponse, e.getMessage()));
                 }
                 out.flush();
                 System.out.println("response sent");
