@@ -13,4 +13,6 @@ public interface StoreRepository {
     ProductType deleteProductType(int productTypeId);
 
     boolean updateStock(int productId, int amount);
+
+    Integer checkExistingStock(int productId);
 }

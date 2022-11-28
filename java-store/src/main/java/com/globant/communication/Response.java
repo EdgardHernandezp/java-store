@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Response implements Serializable {
-    private static final long serialVersionUID = 1l;
     private List<Product> products;
     private String errorDescription;
 

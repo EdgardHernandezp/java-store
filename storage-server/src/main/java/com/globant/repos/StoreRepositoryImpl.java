@@ -71,5 +71,8 @@ public class StoreRepositoryImpl implements StoreRepository {
         return true;
     }
 
-    //TODO: method to check existing stock getStock(product id) return quantity
+    @Override
+    public Integer checkExistingStock(int productId) {
+        return stock.get(productId);
+    }
 }

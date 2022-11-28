@@ -14,14 +14,14 @@ public class Main {
         int amount = 1;
         ObjectMapper mapper = new ObjectMapper();
         LinkedHashMap<String, Object> request = new LinkedHashMap<>();
-        request.put("action", "addProductType");
+        request.put("action", "RETRIEVE_PRODUCTS");
 
         //LinkedHashMap<String, Object> body = createProductbody();
-        LinkedHashMap<String, Object> body = createProductTypeBody();
+        //LinkedHashMap<String, Object> body = createProductTypeBody();
         //LinkedHashMap<String, Object> body = createDeleteInfoBody();
-        //LinkedHashMap<String, Object> body = createWhitdrawalRequestBody();
+        LinkedHashMap<String, Object> body = createWhitdrawalRequestBody();
         request.put("body", body);
-        //request.put("body", 1);
+        //request.put("body", 20);
 
 
         try {
@@ -48,7 +48,7 @@ public class Main {
     private static LinkedHashMap<String, Object> createWhitdrawalRequestBody() {
         LinkedHashMap<String, Object> body = new LinkedHashMap<>();
         body.put("productCode", 1);
-        body.put("requestedQuantity", 10);
+        body.put("requestedQuantity", 15);
         return body;
     }
 
