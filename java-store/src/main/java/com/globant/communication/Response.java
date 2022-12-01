@@ -1,34 +1,32 @@
 package com.globant.communication;
 
-import com.globant.Product;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.List;
 
-public class Response implements Serializable {
-    private List<Product> products;
-    private String errorDescription;
+public class Response<T> implements Serializable {
+    private int responseCode;
+    private String description;
+    private T payload;
 
-    public Response() {
+    @JsonCreator
+    public Response(@JsonProperty("responseCode") int responseCode, @JsonProperty("description") String description,
+            @JsonProperty("payload") T payload) {
+        this.responseCode = responseCode;
+        this.description = description;
+        this.payload = payload;
+
     }
 
-    public Response(List<Product> products, String errorDescription) {
-        this.products = products;
-        this.errorDescription = errorDescription;
+    public T getPayload() {
+        return payload;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public String getErrorDescription() {
-        return errorDescription;
-    }
-
-    public void setErrorDescription(String errorDescription) {
-        this.errorDescription = errorDescription;
+    public int getResponseCode() {
+        return responseCode;
     }
 }

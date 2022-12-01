@@ -1,13 +1,16 @@
 package com.globant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    private int code;
-    private String name;
-    private float price;
+    private final int code;
+    private final String name;
+    private final float price;
 
-    public Product(int code, String name, float price) {
+    @JsonCreator
+    public Product(@JsonProperty("code") int code, @JsonProperty("name") String name, @JsonProperty("price") float price) {
         this.code = code;
         this.name = name;
         this.price = price;
@@ -17,23 +20,11 @@ public class Product implements Serializable {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

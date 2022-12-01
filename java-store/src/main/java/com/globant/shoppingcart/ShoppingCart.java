@@ -9,5 +9,6 @@ public interface ShoppingCart {
 
     float calculateTotal();
 
-    void showShoppingCartContent();
+    Item[] getItems();
+
 }

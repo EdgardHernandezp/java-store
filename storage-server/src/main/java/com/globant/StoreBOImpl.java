@@ -23,6 +23,7 @@ public class StoreBOImpl implements StoreBO {
 
         int responseCode = 200;
         String responseDescription = "OK";
+        Object payload = null;
         switch (request.getAction()) {
             case ADD_PRODUCT:
                 addProduct((Product) request.getBody());
@@ -40,11 +41,13 @@ public class StoreBOImpl implements StoreBO {
             case RETRIEVE_PRODUCTS:
                 StockWithdrawal stockWithdrawal = (StockWithdrawal) request.getBody();
                 int productCode = stockWithdrawal.getProductCode();
-                if (!retrieveProductsFromStorage(productCode, stockWithdrawal.getRequestedQuantity())) {
+                Optional<Product> optProduct = retrieveProductsFromStorage(productCode, stockWithdrawal.getRequestedQuantity());
+                if (optProduct.isEmpty()) {
                     int productStock = checkExistingStock(productCode);
                     responseCode = 412;
                     responseDescription = "not enough stock to fulfill request, product remaining stock = " + productStock;
-                }
+                } else
+                    payload = optProduct.get();
                 break;
             case CHECK_PRODUCT_EXISTENCE:
                 Integer productId = (Integer) request.getBody();
@@ -57,7 +60,7 @@ public class StoreBOImpl implements StoreBO {
                         "Unrecognized action code; must be one of these (case-sensitive): " + Arrays.toString(Actions.values());
                 break;
         }
-        return ParserUtil.generateResponse(responseCode, responseDescription);
+        return ParserUtil.generateResponse(responseCode, responseDescription, payload);
     }
 
     private int checkExistingStock(Integer productId) {
@@ -81,8 +84,11 @@ public class StoreBOImpl implements StoreBO {
         repository.deleteProductType(productTypeId);
     }
 
-    private boolean retrieveProductsFromStorage(int productId, int stock) {
-        return repository.updateStock(productId, stock);
+    private Optional<Product> retrieveProductsFromStorage(int productCode, int stock) {
+        Product product = null;
+        if (repository.updateStock(productCode, stock))
+            product = repository.findProductByCode(productCode);
+        return Optional.ofNullable(product);
     }
 
 }

@@ -24,7 +24,7 @@ public class ShoppingCartDefault implements ShoppingCart {
     }
 
     @Override
-    public void showShoppingCartContent() {
-        items.stream().forEach(item -> System.out.println("name: " + item.getProduct().getName()));
+    public Item[] getItems() {
+        return items.stream().toArray(Item[]::new);
     }
 }

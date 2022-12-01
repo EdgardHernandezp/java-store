@@ -12,10 +12,11 @@ public class ParserUtil {
         return mapper.readValue(message, StoreRequest.class);
     }
 
-    public static String generateResponse(int responseCode, String description) {
+    public static String generateResponse(int responseCode, String description, Object payload) {
         LinkedHashMap<String, Object> responseMap = new LinkedHashMap<>();
         responseMap.put("responseCode", responseCode);
         responseMap.put("description", description);
+        responseMap.put("payload", payload);
         String response = PropertiesHolder.getProperty("json.server.error.msg");
         try {
             response= mapper.writeValueAsString(responseMap);

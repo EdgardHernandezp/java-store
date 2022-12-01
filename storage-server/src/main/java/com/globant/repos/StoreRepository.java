@@ -15,4 +15,6 @@ public interface StoreRepository {
     boolean updateStock(int productId, int amount);
 
     Integer checkExistingStock(int productId);
+
+    Product findProductByCode(int productCode);
 }
