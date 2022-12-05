@@ -10,7 +10,7 @@ import com.globant.Actions;
 @JsonSubTypes({ @JsonSubTypes.Type(value = ProductStoreRequest.class, name = "ADD_PRODUCT"),
         @JsonSubTypes.Type(value = ProductTypeStoreRequest.class, name = "ADD_PRODUCT_TYPE"),
         @JsonSubTypes.Type(value = DeleteStoreRequest.class, name = "DELETE_RESOURCE"),
-        @JsonSubTypes.Type(value = StockWithdrawalStoreRequest.class, name = "RETRIEVE_PRODUCTS"),
+        @JsonSubTypes.Type(value = StockOperationStoreRequest.class, name = "RETRIEVE_PRODUCTS"),
         @JsonSubTypes.Type(value = ProductExistenceRequest.class, name = "CHECK_PRODUCT_EXISTENCE") })
 public class StoreRequest<T> {
     private final Actions action;

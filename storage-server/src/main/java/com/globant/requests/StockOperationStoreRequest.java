@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.globant.Actions;
-import com.globant.pojos.StockWithdrawal;
+import com.globant.pojos.StockOperation;
 
 @JsonTypeName("RETRIEVE_PRODUCTS")
-public class StockWithdrawalStoreRequest extends StoreRequest<StockWithdrawal> {
+public class StockOperationStoreRequest extends StoreRequest<StockOperation> {
     @JsonCreator
-    public StockWithdrawalStoreRequest(@JsonProperty("action") Actions action, @JsonProperty("body") StockWithdrawal body) {
+    public StockOperationStoreRequest(@JsonProperty("action") Actions action, @JsonProperty("body") StockOperation body) {
         super(action, body);
     }
 }

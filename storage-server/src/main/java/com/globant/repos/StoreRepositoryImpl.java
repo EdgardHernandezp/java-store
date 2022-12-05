@@ -65,9 +65,9 @@ public class StoreRepositoryImpl implements StoreRepository {
     @Override
     public boolean updateStock(int productId, int quantity) {
         Integer currentProductQuantity = stock.get(productId);
-        if (currentProductQuantity < quantity)
+        if (quantity < 0 && currentProductQuantity + quantity < 0)
             return false;
-        stock.put(productId, currentProductQuantity - quantity);
+        stock.put(productId, currentProductQuantity + quantity);
         return true;
     }
 

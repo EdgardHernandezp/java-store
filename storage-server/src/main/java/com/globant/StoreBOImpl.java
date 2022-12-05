@@ -3,7 +3,7 @@ package com.globant;
 import com.globant.pojos.DeleteInfo;
 import com.globant.pojos.Product;
 import com.globant.pojos.ProductType;
-import com.globant.pojos.StockWithdrawal;
+import com.globant.pojos.StockOperation;
 import com.globant.repos.StoreRepository;
 import com.globant.requests.StoreRequest;
 import com.globant.utils.ParserUtil;
@@ -39,9 +39,9 @@ public class StoreBOImpl implements StoreBO {
                 addProductType((ProductType) request.getBody());
                 break;
             case RETRIEVE_PRODUCTS:
-                StockWithdrawal stockWithdrawal = (StockWithdrawal) request.getBody();
+                StockOperation stockWithdrawal = (StockOperation) request.getBody();
                 int productCode = stockWithdrawal.getProductCode();
-                Optional<Product> optProduct = retrieveProductsFromStorage(productCode, stockWithdrawal.getRequestedQuantity());
+                Optional<Product> optProduct = retrieveProductsFromStorage(productCode, stockWithdrawal.getQuantity());
                 if (optProduct.isEmpty()) {
                     int productStock = checkExistingStock(productCode);
                     responseCode = 412;

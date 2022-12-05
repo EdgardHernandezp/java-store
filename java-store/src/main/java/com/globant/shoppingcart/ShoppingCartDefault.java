@@ -1,9 +1,9 @@
 package com.globant.shoppingcart;
 
-import com.globant.Product;
 import java.util.LinkedList;
 import java.util.List;
 
+//TODO: currently is allowing to remove only by item; allow removing by quantity
 public class ShoppingCartDefault implements ShoppingCart {
 
     List<Item> items = new LinkedList<>();
@@ -14,8 +14,8 @@ public class ShoppingCartDefault implements ShoppingCart {
     }
 
     @Override
-    public void deleteItem(int itemId) {
-        items.remove(itemId);
+    public Item removeItem(int itemId) throws IndexOutOfBoundsException {
+            return items.remove(itemId);
     }
 
     @Override

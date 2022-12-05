@@ -1,4 +1,4 @@
-package com.globant;
+package com.globant.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

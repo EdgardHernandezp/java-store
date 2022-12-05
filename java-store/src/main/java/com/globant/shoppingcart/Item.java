@@ -1,7 +1,5 @@
 package com.globant.shoppingcart;
 
-import com.globant.Product;
-
 public class Item {
     private final Product product;
     private final int quantity;
@@ -19,4 +17,8 @@ public class Item {
         return product;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" + "product=" + product + ", quantity=" + quantity + '}';
+    }
 }

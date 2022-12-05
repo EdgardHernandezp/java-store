@@ -1,16 +1,17 @@
 package com.globant.communication;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.globant.Product;
-import com.globant.ParseUtil;
-import com.globant.communication.requests.factory.StockWithdrawalRequestFactory;
+import com.globant.shoppingcart.Product;
+import com.globant.utils.ParseUtil;
+import com.globant.communication.requests.factory.StockOperationRequestFactory;
 import java.util.Optional;
 
 public class ServerFacade {
     private final ServerEntryPoint serverEntryPoint = SocketServerEntryPoint.getInstance();
 
-    public Optional<Product> retrieveProductFromStorage(int productCode, int quantity) {
-        String request = ParseUtil.parseRequest(new StockWithdrawalRequestFactory(productCode, quantity).generateRequest());
+    //TODO: change method name
+    public Optional<Product> updateProductStockInStorage(int productCode, int quantity) {
+        String request = ParseUtil.parseRequest(new StockOperationRequestFactory(productCode, quantity).generateRequest());
         TypeReference<Response<Product>> responseType = new TypeReference<>() {
         };
         Response<Product> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), responseType);

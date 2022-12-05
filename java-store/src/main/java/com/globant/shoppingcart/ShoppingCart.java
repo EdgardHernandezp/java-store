@@ -1,11 +1,9 @@
 package com.globant.shoppingcart;
 
-import com.globant.Product;
-
 public interface ShoppingCart {
     void addItem(Product product, int amount);
 
-    void deleteItem(int itemId);
+    Item removeItem(int itemId);
 
     float calculateTotal();
 

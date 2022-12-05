@@ -1,4 +1,4 @@
-package com.globant;
+package com.globant.shoppingcart;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,5 +26,10 @@ public class Product implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "code=" + code + ", name='" + name + '\'' + ", price=" + price + '}';
     }
 }
