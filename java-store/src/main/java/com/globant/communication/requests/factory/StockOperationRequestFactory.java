@@ -2,10 +2,8 @@ package com.globant.communication.requests.factory;
 
 import com.globant.communication.Actions;
 import com.globant.communication.requests.Request;
-import com.globant.communication.requests.StockOperation;
 
-//TODO: change name; now it's not just withdrawal
-public class StockOperationRequestFactory implements RequestFactory<StockOperation> {
+public class StockOperationRequestFactory implements RequestFactory<StockOperationRequestFactory.StockOperation> {
     private final StockOperation stockOperation;
 
     public StockOperationRequestFactory(int productCode, int quantity) {
@@ -17,5 +15,21 @@ public class StockOperationRequestFactory implements RequestFactory<StockOperati
         return new Request<>(Actions.RETRIEVE_PRODUCTS, stockOperation);
     }
 
-    //TODO: nest StockOperation class in here
+    static class StockOperation {
+        private final int productCode;
+        private final int quantity;
+
+        public StockOperation(int productCode, int quantity) {
+            this.productCode = productCode;
+            this.quantity = quantity;
+        }
+
+        public int getProductCode() {
+            return productCode;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+    }
 }

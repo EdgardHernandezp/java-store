@@ -3,7 +3,10 @@ package com.globant.repos;
 import com.globant.pojos.Product;
 import com.globant.pojos.ProductType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StoreRepositoryImpl implements StoreRepository {
     private static final Map<Integer, Product> products = new HashMap<>();
@@ -79,5 +82,12 @@ public class StoreRepositoryImpl implements StoreRepository {
     @Override
     public Product findProductByCode(int productCode) {
         return products.get(productCode);
+    }
+
+    @Override
+    public List<Product> searchProductByName(final String productName) {
+        return products.entrySet().stream().map(entry -> entry.getValue())
+                .filter(product -> Pattern.compile(Pattern.quote(productName), Pattern.CASE_INSENSITIVE).matcher(product.getName()).find())
+                .collect(Collectors.toList());
     }
 }

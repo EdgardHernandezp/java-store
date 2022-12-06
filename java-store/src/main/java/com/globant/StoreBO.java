@@ -20,6 +20,7 @@ public class StoreBO {
             System.out.println("4 - Show shopping cart's total price");
             System.out.println("5 - search product by name");
             System.out.println("6 - show available products in the store");
+            //TODO: admin features (add product, add product type)
             System.out.println("0 - Exit the program");
 
             int userInput = inputReader.nextInt();
@@ -47,6 +48,9 @@ public class StoreBO {
                     printShoppingCartTotal();
                     break;
                 case 5:
+                    System.out.println("provide product name:");
+                    String userProvidedProductName = inputReader.next();
+                    searchProductByName(userProvidedProductName);
                     break;
                 case 6:
                     break;
@@ -60,8 +64,11 @@ public class StoreBO {
         inputReader.close();
     }
 
+    private void searchProductByName(String userProvidedProductName) {
+        costumerSession.searchProductByName(userProvidedProductName);
+    }
+
     private void removeItemFromShoppingCart(int itemId) {
-        //TODO: add product back to storage
         costumerSession.removeItemFromShoppingCart(itemId);
     }
 

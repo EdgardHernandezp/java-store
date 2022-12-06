@@ -11,7 +11,8 @@ import com.globant.Actions;
         @JsonSubTypes.Type(value = ProductTypeStoreRequest.class, name = "ADD_PRODUCT_TYPE"),
         @JsonSubTypes.Type(value = DeleteStoreRequest.class, name = "DELETE_RESOURCE"),
         @JsonSubTypes.Type(value = StockOperationStoreRequest.class, name = "RETRIEVE_PRODUCTS"),
-        @JsonSubTypes.Type(value = ProductExistenceRequest.class, name = "CHECK_PRODUCT_EXISTENCE") })
+        @JsonSubTypes.Type(value = ProductExistenceRequest.class, name = "CHECK_PRODUCT_EXISTENCE"),
+        @JsonSubTypes.Type(value = ProductSearchStoreRequest.class, name = "SEARCH_PRODUCT") })
 public class StoreRequest<T> {
     private final Actions action;
     private final T body;

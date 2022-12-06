@@ -4,6 +4,7 @@ import com.globant.communication.ServerFacade;
 import com.globant.shoppingcart.Item;
 import com.globant.shoppingcart.Product;
 import com.globant.shoppingcart.ShoppingCart;
+import java.util.List;
 import java.util.Optional;
 
 public class CostumerSession {
@@ -45,5 +46,11 @@ public class CostumerSession {
             System.out.println("Item with id = " + itemId + " could not be removed from shopping cart");
             e.printStackTrace();
         }
+    }
+
+    public void searchProductByName(String userProvidedProductName) {
+        List<Product> products = serverFacade.searchProductByName(userProvidedProductName);
+        System.out.println("products found:");
+        products.stream().forEach(System.out::println);
     }
 }

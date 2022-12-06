@@ -7,7 +7,9 @@ import com.globant.pojos.StockOperation;
 import com.globant.repos.StoreRepository;
 import com.globant.requests.StoreRequest;
 import com.globant.utils.ParserUtil;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class StoreBOImpl implements StoreBO {
@@ -54,6 +56,15 @@ public class StoreBOImpl implements StoreBO {
                 int productStock = checkExistingStock(productId);
                 responseDescription = "product with id=" + productId + " has " + productStock + " units in stock";
                 break;
+            case SEARCH_PRODUCT:
+                List<Product> products = searchProductByName((String) request.getBody());
+                if (products.isEmpty()) {
+                    responseCode = 204;
+                    responseDescription = "No results";
+                    payload = new ArrayList<>();
+                }
+                payload = products;
+                break;
             default:
                 responseCode = 400;
                 responseDescription =
@@ -61,6 +72,10 @@ public class StoreBOImpl implements StoreBO {
                 break;
         }
         return ParserUtil.generateResponse(responseCode, responseDescription, payload);
+    }
+
+    private List<Product> searchProductByName(String productName) {
+        return repository.searchProductByName(productName);
     }
 
     private int checkExistingStock(Integer productId) {

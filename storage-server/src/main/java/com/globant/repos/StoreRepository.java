@@ -2,6 +2,7 @@ package com.globant.repos;
 
 import com.globant.pojos.Product;
 import com.globant.pojos.ProductType;
+import java.util.List;
 
 public interface StoreRepository {
     boolean createProduct(Product product);
@@ -17,4 +18,6 @@ public interface StoreRepository {
     Integer checkExistingStock(int productId);
 
     Product findProductByCode(int productCode);
+
+    List<Product> searchProductByName(String productName);
 }
