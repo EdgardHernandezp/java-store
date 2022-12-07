@@ -2,6 +2,7 @@ package com.globant.repos;
 
 import com.globant.pojos.Product;
 import com.globant.pojos.ProductType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,8 +87,11 @@ public class StoreRepositoryImpl implements StoreRepository {
 
     @Override
     public List<Product> searchProductByName(final String productName) {
-        return products.entrySet().stream().map(entry -> entry.getValue())
-                .filter(product -> Pattern.compile(Pattern.quote(productName), Pattern.CASE_INSENSITIVE).matcher(product.getName()).find())
-                .collect(Collectors.toList());
+        if (productName == null || productName.isEmpty()) {
+            return new ArrayList<Product>(products.values());
+        } else
+            return products.entrySet().stream().map(entry -> entry.getValue())
+                    .filter(product -> Pattern.compile(Pattern.quote(productName), Pattern.CASE_INSENSITIVE).matcher(product.getName())
+                            .find()).collect(Collectors.toList());
     }
 }

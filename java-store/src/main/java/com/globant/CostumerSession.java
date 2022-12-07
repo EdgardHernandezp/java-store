@@ -53,4 +53,9 @@ public class CostumerSession {
         System.out.println("products found:");
         products.stream().forEach(System.out::println);
     }
+
+    public void showAvailableProducts() {
+        System.out.println("Products available:");
+        serverFacade.searchAvailableProducts().stream().forEach(System.out::println);
+    }
 }

@@ -20,6 +20,7 @@ public class StoreBO {
             System.out.println("4 - Show shopping cart's total price");
             System.out.println("5 - search product by name");
             System.out.println("6 - show available products in the store");
+            System.out.println("7 - mange resources");
             //TODO: admin features (add product, add product type)
             System.out.println("0 - Exit the program");
 
@@ -27,12 +28,10 @@ public class StoreBO {
             switch (userInput) {
                 case 1:
                     System.out.println("Indicate the code for the product to add");
-                    //TODO: validate user input
                     final int productCode = inputReader.nextInt();
                     System.out.println("Indicate product quantity");
                     int quantity = inputReader.nextInt();
                     addProductToShoppingCart(productCode, quantity);
-                    //TODO: add messages to a property file
                     break;
                 case 2:
                     System.out.println("Indicate product id in shopping cart");
@@ -53,6 +52,9 @@ public class StoreBO {
                     searchProductByName(userProvidedProductName);
                     break;
                 case 6:
+                    showAvailableProducts();
+                    break;
+                case 7:
                     break;
                 default:
                     exitFlag = userInput;
@@ -62,6 +64,10 @@ public class StoreBO {
         }
 
         inputReader.close();
+    }
+
+    private void showAvailableProducts() {
+        costumerSession.showAvailableProducts();
     }
 
     private void searchProductByName(String userProvidedProductName) {
