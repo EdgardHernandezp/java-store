@@ -2,10 +2,12 @@ package com.globant.repos;
 
 import com.globant.pojos.Product;
 import com.globant.pojos.ProductType;
+import com.globant.pojos.StockOperation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -67,12 +69,21 @@ public class StoreRepositoryImpl implements StoreRepository {
     }
 
     @Override
-    public boolean updateStock(int productId, int quantity) {
-        Integer currentProductQuantity = stock.get(productId);
-        if (quantity < 0 && currentProductQuantity + quantity < 0)
-            return false;
-        stock.put(productId, currentProductQuantity + quantity);
-        return true;
+    public StockOperation[] updateStock(StockOperation[] stockOperations) {
+        //TODO: method subtracts from stock only, change impl to add too
+        List<StockOperation> stockOpList = new ArrayList<>();
+        for (StockOperation stockOp : stockOperations) {
+            int productCode = stockOp.getProduct().getCode();
+            Integer currentProductQuantity = stock.get(productCode);
+            int remainingProductStock = currentProductQuantity - stockOp.getQuantity();
+            if ( remainingProductStock <= 0){
+                stock.remove(productCode);
+                if (remainingProductStock < 0)
+                    stockOpList.add(new StockOperation(stockOp.getProduct(), Math.abs(remainingProductStock)));
+            } else
+                stock.put(productCode, remainingProductStock);
+        }
+        return stockOpList.toArray(new StockOperation[stockOpList.size()]);
     }
 
     @Override
@@ -81,17 +92,20 @@ public class StoreRepositoryImpl implements StoreRepository {
     }
 
     @Override
-    public Product findProductByCode(int productCode) {
-        return products.get(productCode);
+    public Optional<Product> findProductByCode(int productCode) {
+        return Optional.ofNullable(products.get(productCode));
     }
 
     @Override
     public List<Product> searchProductByName(final String productName) {
-        if (productName == null || productName.isEmpty()) {
-            return new ArrayList<Product>(products.values());
-        } else
-            return products.entrySet().stream().map(entry -> entry.getValue())
-                    .filter(product -> Pattern.compile(Pattern.quote(productName), Pattern.CASE_INSENSITIVE).matcher(product.getName())
-                            .find()).collect(Collectors.toList());
+        return products.entrySet().stream().map(entry -> entry.getValue())
+                .filter(product -> Pattern.compile(Pattern.quote(productName), Pattern.CASE_INSENSITIVE).matcher(product.getName()).find())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findAvailableProducts() {
+        return stock.entrySet().stream().filter(entry -> entry.getValue() > 0).map(entry -> products.get(entry.getKey()))
+                .collect(Collectors.toList());
     }
 }

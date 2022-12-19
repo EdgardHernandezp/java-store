@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StockOperation {
-    private int productCode;
+    private Product product;
     private int quantity;
 
     @JsonCreator
-    public StockOperation(@JsonProperty("productCode") int productCode, @JsonProperty("requestedQuantity") int quantity) {
-        this.productCode = productCode;
+    public StockOperation(@JsonProperty("productCode") Product product, @JsonProperty("requestedQuantity") int quantity) {
+        this.product = product;
         this.quantity = quantity;
     }
 
-    public int getProductCode() {
-        return productCode;
+    public Product getProduct() {
+        return product;
     }
 
     public int getQuantity() {

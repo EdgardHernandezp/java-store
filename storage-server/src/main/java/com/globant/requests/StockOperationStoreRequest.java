@@ -7,9 +7,9 @@ import com.globant.Actions;
 import com.globant.pojos.StockOperation;
 
 @JsonTypeName("RETRIEVE_PRODUCTS")
-public class StockOperationStoreRequest extends StoreRequest<StockOperation> {
+public class StockOperationStoreRequest extends StoreRequest<StockOperation[]> {
     @JsonCreator
-    public StockOperationStoreRequest(@JsonProperty("action") Actions action, @JsonProperty("body") StockOperation body) {
+    public StockOperationStoreRequest(@JsonProperty("action") Actions action, @JsonProperty("body") StockOperation[] body) {
         super(action, body);
     }
 }

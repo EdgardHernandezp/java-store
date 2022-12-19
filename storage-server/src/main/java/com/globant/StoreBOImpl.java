@@ -7,14 +7,13 @@ import com.globant.pojos.StockOperation;
 import com.globant.repos.StoreRepository;
 import com.globant.requests.StoreRequest;
 import com.globant.utils.ParserUtil;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class StoreBOImpl implements StoreBO {
 
-    private StoreRepository repository;
+    private final StoreRepository repository;
 
     public StoreBOImpl(StoreRepository repository) {
         this.repository = repository;
@@ -41,29 +40,34 @@ public class StoreBOImpl implements StoreBO {
                 addProductType((ProductType) request.getBody());
                 break;
             case RETRIEVE_PRODUCTS:
-                StockOperation stockWithdrawal = (StockOperation) request.getBody();
-                int productCode = stockWithdrawal.getProductCode();
-                Optional<Product> optProduct = retrieveProductsFromStorage(productCode, stockWithdrawal.getQuantity());
-                if (optProduct.isEmpty()) {
-                    int productStock = checkExistingStock(productCode);
-                    responseCode = 412;
-                    responseDescription = "not enough stock to fulfill request, product remaining stock = " + productStock;
-                } else
-                    payload = optProduct.get();
+                StockOperation[] stockOperations = (StockOperation[]) request.getBody();
+                stockOperations = retrieveProductsFromStorage(stockOperations);
+                if (stockOperations.length > 0) {
+                    responseDescription = "Couldn't fulfill product stock completely";
+                    payload = stockOperations;
+                }
                 break;
             case CHECK_PRODUCT_EXISTENCE:
                 Integer productId = (Integer) request.getBody();
                 int productStock = checkExistingStock(productId);
                 responseDescription = "product with id=" + productId + " has " + productStock + " units in stock";
+                payload = findProductByCode(productId).orElse(null);
                 break;
             case SEARCH_PRODUCT:
                 List<Product> products = searchProductByName((String) request.getBody());
                 if (products.isEmpty()) {
                     responseCode = 204;
                     responseDescription = "No results";
-                    payload = new ArrayList<>();
                 }
                 payload = products;
+                break;
+            case FIND_AVAILABLE_PRODUCTS:
+                List<Product> availableProducts = findAvailableProducts();
+                if (availableProducts.isEmpty()) {
+                    responseCode = 204;
+                    responseDescription = "No results";
+                }
+                payload = availableProducts;
                 break;
             default:
                 responseCode = 400;
@@ -99,11 +103,16 @@ public class StoreBOImpl implements StoreBO {
         repository.deleteProductType(productTypeId);
     }
 
-    private Optional<Product> retrieveProductsFromStorage(int productCode, int stock) {
-        Product product = null;
-        if (repository.updateStock(productCode, stock))
-            product = repository.findProductByCode(productCode);
-        return Optional.ofNullable(product);
+    private StockOperation[] retrieveProductsFromStorage(StockOperation[] stockOperations) {
+        return repository.updateStock(stockOperations);
+    }
+
+    private List<Product> findAvailableProducts() {
+        return repository.findAvailableProducts();
+    }
+
+    private Optional<Product> findProductByCode(int code) {
+        return repository.findProductByCode(code);
     }
 
 }

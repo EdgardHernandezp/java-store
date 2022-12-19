@@ -2,34 +2,17 @@ package com.globant.communication.requests.factory;
 
 import com.globant.communication.Actions;
 import com.globant.communication.requests.Request;
+import com.globant.shoppingcart.Item;
 
-public class StockOperationRequestFactory implements RequestFactory<StockOperationRequestFactory.StockOperation> {
-    private final StockOperation stockOperation;
+public class StockOperationRequestFactory implements RequestFactory<Item[]> {
+    private final Item[] items;
 
-    public StockOperationRequestFactory(int productCode, int quantity) {
-        this.stockOperation = new StockOperation(productCode, quantity);
+    public StockOperationRequestFactory(Item[] items) {
+        this.items = items;
     }
 
     @Override
-    public Request<StockOperation> generateRequest() {
-        return new Request<>(Actions.RETRIEVE_PRODUCTS, stockOperation);
-    }
-
-    static class StockOperation {
-        private final int productCode;
-        private final int quantity;
-
-        public StockOperation(int productCode, int quantity) {
-            this.productCode = productCode;
-            this.quantity = quantity;
-        }
-
-        public int getProductCode() {
-            return productCode;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
+    public Request<Item[]> generateRequest() {
+        return new Request<>(Actions.RETRIEVE_PRODUCTS, items);
     }
 }

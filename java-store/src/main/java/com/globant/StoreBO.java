@@ -20,8 +20,9 @@ public class StoreBO {
             System.out.println("4 - Show shopping cart's total price");
             System.out.println("5 - search product by name");
             System.out.println("6 - show available products in the store");
-            System.out.println("7 - mange resources");
+            System.out.println("7 - manage resources");
             //TODO: admin features (add product, add product type)
+            System.out.println("8 - checkout");
             System.out.println("0 - Exit the program");
 
             int userInput = inputReader.nextInt();
@@ -36,7 +37,9 @@ public class StoreBO {
                 case 2:
                     System.out.println("Indicate product id in shopping cart");
                     int itemId = inputReader.nextInt();
-                    removeItemFromShoppingCart(itemId);
+                    System.out.println("Indicate item quantity to remove");
+                    int itemQuantity = inputReader.nextInt();
+                    removeItemFromShoppingCart(itemId, itemQuantity);
                     break;
                 case 3:
                     System.out.println("These are the available products");
@@ -56,14 +59,20 @@ public class StoreBO {
                     break;
                 case 7:
                     break;
+                case 8:
+                    checkoutShoppingCart();
+                    break;
                 default:
                     exitFlag = userInput;
                     break;
             }
-            //TODO: if car it's not paid, return all products back to storage
         }
 
         inputReader.close();
+    }
+
+    private void checkoutShoppingCart() {
+        costumerSession.checkoutShoppingCart();
     }
 
     private void showAvailableProducts() {
@@ -74,8 +83,8 @@ public class StoreBO {
         costumerSession.searchProductByName(userProvidedProductName);
     }
 
-    private void removeItemFromShoppingCart(int itemId) {
-        costumerSession.removeItemFromShoppingCart(itemId);
+    private void removeItemFromShoppingCart(int itemId, int quantity) {
+        costumerSession.removeItemFromShoppingCart(itemId, quantity);
     }
 
     private void printShoppingCartTotal() {
