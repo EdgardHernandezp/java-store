@@ -23,6 +23,7 @@ public class StoreBO {
             System.out.println("7 - manage resources");
             //TODO: admin features (add product, add product type)
             System.out.println("8 - checkout");
+            System.out.println("9 - Clear shopping cart");
             System.out.println("0 - Exit the program");
 
             int userInput = inputReader.nextInt();
@@ -62,6 +63,9 @@ public class StoreBO {
                 case 8:
                     checkoutShoppingCart();
                     break;
+                case 9:
+                    clearShoppingCart();
+                    break;
                 default:
                     exitFlag = userInput;
                     break;
@@ -69,6 +73,10 @@ public class StoreBO {
         }
 
         inputReader.close();
+    }
+
+    private void clearShoppingCart() {
+        costumerSession.clearShoppingCart();
     }
 
     private void checkoutShoppingCart() {

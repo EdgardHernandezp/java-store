@@ -4,70 +4,47 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.globant.communication.requests.factory.FindAvailableProductsRequestFactory;
 import com.globant.communication.requests.factory.ProductExistenceRequestFactory;
 import com.globant.communication.requests.factory.ProductSearchRequestFactory;
+import com.globant.communication.requests.factory.RequestFactory;
+import com.globant.communication.requests.factory.StockOperationRequestFactory;
 import com.globant.shoppingcart.Item;
 import com.globant.shoppingcart.Product;
 import com.globant.utils.ParseUtil;
-import com.globant.communication.requests.factory.StockOperationRequestFactory;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-//TODO: duplicate code in class, deal with it.
-//Generics methods might to the trick
-//TODO: consider singleton for this class
-public class ServerFacade {
-    private final ServerEntryPoint serverEntryPoint = SocketServerEntryPoint.getInstance();
+//TODO: convert all the class to generic and pass the type param to a TypeReference field
+//Then pass the typeref to all the method
+public final class ServerFacade {
+    private static final ServerEntryPoint serverEntryPoint = SocketServerEntryPoint.getInstance();
 
-    public Item[] updateProductsStockInStorage(Item[] items) {
-        String request = ParseUtil.parseRequest(new StockOperationRequestFactory(items).generateRequest());
-        TypeReference<Response<Item[]>> responseType = new TypeReference<>() {
-        };
-        Response<Item[]> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), responseType);
-        Item[] itemsNotProcessed = null;
+    private static <T, S> T exchange(RequestFactory<S> requestFactory, TypeReference<Response<T>> typeRef) {
+        String request = ParseUtil.parseRequest(requestFactory.generateRequest());
+        Response<T> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), typeRef);
+        T responsePayload = null;
         if (response.getResponseCode() == 200)
-            itemsNotProcessed = response.getPayload();
+            responsePayload = response.getPayload();
         else
             System.out.println(response.getDescription());
-        return itemsNotProcessed;
+        return responsePayload;
     }
 
-    public List<Product> searchProductByName(String userProvidedProductName) {
-        String request = ParseUtil.parseRequest(new ProductSearchRequestFactory(userProvidedProductName).generateRequest());
-        TypeReference<Response<List<Product>>> responseType = new TypeReference<>() {
-        };
-        Response<List<Product>> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), responseType);
-        List<Product> products = new ArrayList<>();
-        if (response.getResponseCode() == 200)
-            products = response.getPayload();
-        else
-            System.out.println(response.getDescription());
-        return products;
+    public static Item[] updateProductsStockInStorage(Item[] items) {
+        return exchange(new StockOperationRequestFactory(items), new TypeReference<>() {
+        });
     }
 
-    public List<Product> searchAvailableProducts() {
-        String request = ParseUtil.parseRequest(new FindAvailableProductsRequestFactory().generateRequest());
-        //TODO: pass class type not TypeRef, making code clearer here. Pass it to ParseUtil
-        TypeReference<Response<List<Product>>> responseType = new TypeReference<>() {
-        };
-        Response<List<Product>> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), responseType);
-        List<Product> products = new ArrayList<>();
-        if (response.getResponseCode() == 200)
-            products = response.getPayload();
-        else
-            System.out.println(response.getDescription());
-        return products;
+    public static Product[] searchProductByName(String userProvidedProductName) {
+        return exchange(new ProductSearchRequestFactory(userProvidedProductName), new TypeReference<>() {
+        });
     }
 
-    public Optional<Product> checkProductExistence(int productCode) {
-        String request = ParseUtil.parseRequest(new ProductExistenceRequestFactory(productCode).generateRequest());
-        TypeReference<Response<Product>> responseType = new TypeReference<>() {
-        };
-        Response<Product> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), responseType);
-        Product product = null;
-        if (response.getResponseCode() == 200)
-            product = response.getPayload();
-        else
-            System.out.println(response.getDescription());
+    public static Product[] searchAvailableProducts() {
+        return exchange(new FindAvailableProductsRequestFactory(), new TypeReference<>() {
+        });
+    }
+
+    public static Optional<Product> checkProductExistence(int productCode) {
+        Product product = exchange(new ProductExistenceRequestFactory(productCode), new TypeReference<>() {
+        });
         return Optional.ofNullable(product);
     }
 }

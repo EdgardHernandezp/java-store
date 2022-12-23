@@ -2,9 +2,8 @@ package com.globant.communication;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 
-public class Response<T> implements Serializable {
+public class Response<T> {
     private int responseCode;
     private String description;
     private T payload;

@@ -3,14 +3,19 @@ package com.globant.shoppingcart;
 import java.util.LinkedList;
 import java.util.List;
 
-//TODO: guarantee uniqueness for each item
 public class ShoppingCartDefault implements ShoppingCart {
 
     private List<Item> items = new LinkedList<>();
 
     @Override
     public void addItem(Product product, int amount) {
-        items.add(new Item(product, amount));
+        Item item = new Item(product, amount);
+        int index = items.indexOf(item);
+        if (index >= 0) {
+            item = items.get(index);
+            item.setQuantity(item.getQuantity() + amount);
+        } else
+            items.add(item);
     }
 
     @Override

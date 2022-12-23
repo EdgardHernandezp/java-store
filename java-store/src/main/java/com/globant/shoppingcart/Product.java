@@ -2,9 +2,8 @@ package com.globant.shoppingcart;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 
-public class Product implements Serializable {
+public class Product {
     private final int code;
     private final String name;
     private final float price;
@@ -31,5 +30,22 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product{" + "code=" + code + ", name='" + name + '\'' + ", price=" + price + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Product product = (Product) o;
+
+        return code == product.code;
+    }
+
+    @Override
+    public int hashCode() {
+        return code;
     }
 }

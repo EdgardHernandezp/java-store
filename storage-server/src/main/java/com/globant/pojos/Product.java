@@ -2,9 +2,8 @@ package com.globant.pojos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.io.Serializable;
 
-public class Product implements Serializable {
+public class Product {
     private int code;
     private String name;
     private double price;

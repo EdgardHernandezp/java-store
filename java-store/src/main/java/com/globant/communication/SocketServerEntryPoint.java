@@ -21,6 +21,7 @@ public class SocketServerEntryPoint implements ServerEntryPoint {
 
     @Override
     public String sendRequest(String request) {
+        //TODO: change the response, use the response structure, be consistent
         String response = "No response from server";
         try (Socket socket = new Socket("localhost", 8081);
                 PrintWriter out = new PrintWriter(socket.getOutputStream());

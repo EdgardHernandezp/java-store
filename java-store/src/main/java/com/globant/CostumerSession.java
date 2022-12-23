@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class CostumerSession {
     private final ShoppingCart shoppingCart;
-    private final ServerFacade serverFacade = new ServerFacade(); //TODO: like this or inject it?
     private final PaymentProcessor paymentProcessor;
 
     public CostumerSession(ShoppingCart shoppingCart, PaymentProcessor paymentProcessor) {
@@ -32,7 +31,7 @@ public class CostumerSession {
     }
 
     public void addProductToShoppingCart(int productCode, int quantity) {
-        Optional<Product> optProduct = serverFacade.checkProductExistence(productCode);
+        Optional<Product> optProduct = ServerFacade.checkProductExistence(productCode);
         optProduct.ifPresentOrElse(product -> {
             shoppingCart.addItem(product, quantity);
             System.out.println(product.getName() + " added successfully");
@@ -50,19 +49,18 @@ public class CostumerSession {
     }
 
     public void searchProductByName(String userProvidedProductName) {
-        List<Product> products = serverFacade.searchProductByName(userProvidedProductName);
         System.out.println("products found:");
-        products.stream().forEach(System.out::println);
+        Arrays.stream(ServerFacade.searchProductByName(userProvidedProductName)).forEach(System.out::println);
     }
 
     public void showAvailableProducts() {
         System.out.println("Products available:");
-        serverFacade.searchAvailableProducts().stream().forEach(System.out::println);
+        Arrays.stream(ServerFacade.searchAvailableProducts()).forEach(System.out::println);
     }
 
     public void checkoutShoppingCart() {
         if (paymentProcessor.processPayment(shoppingCart.calculateTotal())) {
-            Item[] itemsNotProcessed = serverFacade.updateProductsStockInStorage(shoppingCart.getItems());
+            Item[] itemsNotProcessed = ServerFacade.updateProductsStockInStorage(shoppingCart.getItems());
             if (itemsNotProcessed.length > 0) {
                 System.out.println("The next items had no stock:");
                 Arrays.stream(itemsNotProcessed).forEach(System.out::println);
@@ -74,5 +72,9 @@ public class CostumerSession {
             }
             shoppingCart.removeAllItems();
         }
+    }
+
+    public void clearShoppingCart() {
+        shoppingCart.removeAllItems();
     }
 }

@@ -21,9 +21,9 @@ public final class ParseUtil {
         }
     }
 
-    public static <T> Response<T> parseResponse(String response, TypeReference<Response<T>> type) {
+    public static <T> Response<T> parseResponse(String response, TypeReference<Response<T>> typeRef) {
         try {
-            return mapper.readValue(response, type);
+            return mapper.readValue(response, typeRef);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

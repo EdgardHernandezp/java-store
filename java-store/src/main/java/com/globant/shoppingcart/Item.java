@@ -30,4 +30,21 @@ public class Item {
     public String toString() {
         return "Item{" + "product=" + product + ", quantity=" + quantity + '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Item item = (Item) o;
+
+        return product.equals(item.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return product.hashCode();
+    }
 }
