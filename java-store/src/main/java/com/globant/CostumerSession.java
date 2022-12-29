@@ -60,6 +60,7 @@ public class CostumerSession {
 
     public void checkoutShoppingCart() {
         if (paymentProcessor.processPayment(shoppingCart.calculateTotal())) {
+            Arrays.stream(shoppingCart.getItems()).forEach(item -> item.setQuantity(Math.negateExact(item.getQuantity())));
             Item[] itemsNotProcessed = ServerFacade.updateProductsStockInStorage(shoppingCart.getItems());
             if (itemsNotProcessed.length > 0) {
                 System.out.println("The next items had no stock:");

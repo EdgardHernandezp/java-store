@@ -11,11 +11,12 @@ import com.globant.shoppingcart.Product;
 import com.globant.utils.ParseUtil;
 import java.util.Optional;
 
-//TODO: convert all the class to generic and pass the type param to a TypeReference field
-//Then pass the typeref to all the method
 public final class ServerFacade {
     private static final ServerEntryPoint serverEntryPoint = SocketServerEntryPoint.getInstance();
 
+    private ServerFacade() {
+    }
+    
     private static <T, S> T exchange(RequestFactory<S> requestFactory, TypeReference<Response<T>> typeRef) {
         String request = ParseUtil.parseRequest(requestFactory.generateRequest());
         Response<T> response = ParseUtil.parseResponse(serverEntryPoint.sendRequest(request), typeRef);

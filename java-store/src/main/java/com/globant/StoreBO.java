@@ -9,6 +9,7 @@ public class StoreBO {
         this.costumerSession = costumerSession;
     }
 
+    //TODO: multi sessions
     public void run() {
         Scanner inputReader = new Scanner(System.in);
         int exitFlag = -1;

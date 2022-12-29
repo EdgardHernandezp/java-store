@@ -13,6 +13,6 @@ public class StockOperationRequestFactory implements RequestFactory<Item[]> {
 
     @Override
     public Request<Item[]> generateRequest() {
-        return new Request<>(Actions.RETRIEVE_PRODUCTS, items);
+        return new Request<>(Actions.UPDATE_STOCK, items);
     }
 }

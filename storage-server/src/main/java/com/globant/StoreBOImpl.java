@@ -39,11 +39,12 @@ public class StoreBOImpl implements StoreBO {
             case ADD_PRODUCT_TYPE:
                 addProductType((ProductType) request.getBody());
                 break;
-            case RETRIEVE_PRODUCTS:
+            case UPDATE_STOCK:
                 StockOperation[] stockOperations = (StockOperation[]) request.getBody();
-                stockOperations = retrieveProductsFromStorage(stockOperations);
+                stockOperations = updateProductsStock(stockOperations);
+                payload = new Object[0];
                 if (stockOperations.length > 0) {
-                    responseDescription = "Couldn't fulfill product stock completely";
+                    responseDescription = "Couldn't completely fulfill product stock operation";
                     payload = stockOperations;
                 }
                 break;
@@ -103,7 +104,7 @@ public class StoreBOImpl implements StoreBO {
         repository.deleteProductType(productTypeId);
     }
 
-    private StockOperation[] retrieveProductsFromStorage(StockOperation[] stockOperations) {
+    private StockOperation[] updateProductsStock(StockOperation[] stockOperations) {
         return repository.updateStock(stockOperations);
     }
 

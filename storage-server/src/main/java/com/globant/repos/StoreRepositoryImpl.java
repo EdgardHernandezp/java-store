@@ -70,20 +70,32 @@ public class StoreRepositoryImpl implements StoreRepository {
 
     @Override
     public StockOperation[] updateStock(StockOperation[] stockOperations) {
-        //TODO: method subtracts from stock only, change impl to add too
-        List<StockOperation> stockOpList = new ArrayList<>();
+        List<StockOperation> unfulfilledStockOps = new ArrayList<>();
         for (StockOperation stockOp : stockOperations) {
-            int productCode = stockOp.getProduct().getCode();
-            Integer currentProductQuantity = stock.get(productCode);
-            int remainingProductStock = currentProductQuantity - stockOp.getQuantity();
-            if ( remainingProductStock <= 0){
-                stock.remove(productCode);
-                if (remainingProductStock < 0)
-                    stockOpList.add(new StockOperation(stockOp.getProduct(), Math.abs(remainingProductStock)));
-            } else
-                stock.put(productCode, remainingProductStock);
+            if (stockOp.getQuantity() < 0)
+                subtractStock(stockOp, unfulfilledStockOps);
+            else
+                addStock(stockOp);
         }
-        return stockOpList.toArray(new StockOperation[stockOpList.size()]);
+        return unfulfilledStockOps.toArray(new StockOperation[unfulfilledStockOps.size()]);
+    }
+
+    private static void addStock(StockOperation stockOp) {
+        int productCode = stockOp.getProduct().getCode();
+        Integer currentProductQuantity = stock.get(productCode);
+        stock.put(productCode, currentProductQuantity + stockOp.getQuantity());
+    }
+
+    private void subtractStock(StockOperation stockOp, List<StockOperation> unfulfilledStockOps) {
+        int productCode = stockOp.getProduct().getCode();
+        Integer currentProductQuantity = stock.get(productCode);
+        int remainingProductStock = currentProductQuantity + stockOp.getQuantity();
+        if (remainingProductStock <= 0) {
+            stock.remove(productCode);
+            if (remainingProductStock < 0)
+                unfulfilledStockOps.add(new StockOperation(stockOp.getProduct(), Math.abs(remainingProductStock)));
+        } else
+            stock.put(productCode, remainingProductStock);
     }
 
     @Override
